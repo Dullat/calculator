@@ -5,17 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div class="wrapper">
         <div class="screen"></div>
-        <div class="keypad">
-            <div class="key op-key plus" onclick="exec(`+`)" value="+">+</div>
-            <div class="key op-key" onclick="exec(`-`)" value="-">-</div>
-            <div class="key op-key" onclick="exec(`*`)" value="*">*</div>
-            <div class="key op-key div" onclick="exec(`/`)" value="/">/</div>
+        <div class="keypad" style="user-select: none;">
+            <div class="key op-key plus">+</div>
+            <div class="key op-key">-</div>
+            <div class="key op-key">*</div>
+            <div class="key op-key div">/</div>
 
             <div class="key num-key">1</div>
             <div class="key num-key">2</div>
@@ -27,133 +30,13 @@
             <div class="key num-key">8</div>
             <div class="key num-key">9</div>
             <div class="key clear-key">C</div>
-            <div class="key num-key">0</div>
-            <div class="key ans-key" onclick="exec(`=`)">
-                <span>=</span>
-            </div>
+            <div class="key zero num-key">0</div>
+            <div class="key dot-key">.</div>
+            <div class="key ans-key">=</div>
         </div>
     </div>
 
-    <script type="text/javascript">
-        const numKey = document.querySelectorAll('.num-key');
-        const screen = document.querySelector('.screen');
-        const clr = document.querySelector('.clear-key');
-        const ansKey = document.querySelector('.ans-key');
-        const numKeyArray = Array.from(numKey);
-        console.log(numKeyArray);
-
-        let clear = false;
-
-        numKeyArray.forEach(element => {
-            element.addEventListener("click", () => {
-                if (clear === true) {
-                    screen.innerHTML = "";
-                    clear = false;
-                }
-                screen.innerHTML += element.innerHTML;
-                console.log(v1, v2, op, ans);
-            })
-        });
-
-        function add(a, b) {
-            let temp = a + b;
-            return temp;
-            a = 0;
-            b = 0;
-        }
-
-        function sub(a, b) {
-            let temp = a - b;
-            return temp;
-        }
-
-        function mul(a, b) {
-            let temp = a * b;
-            return temp;
-        }
-
-        function div(a, b) {
-            let temp;
-            if (v2 !== 0) {
-                temp = a / b;
-            } else {
-                alert("are u serious?");
-            }
-            return temp;
-        }
-
-        let v1 = undefined;
-        let v2 = undefined;
-        let op = "";
-        let ans = undefined;
-        function exec(operation) {
-            const inputValue = parseInt(screen.innerHTML, 10);
-            if (isNaN(inputValue)) {
-                // If the input is not a valid number, clear everything
-                clearEverything();
-                return;
-            }
-
-            if (v1 === undefined) {
-                v1 = parseInt(screen.innerHTML, 10);
-                op = operation;
-                console.log(v1);
-                screen.innerHTML = "";
-            } else if (v1 !== undefined && op !== "") {
-                v2 = parseInt(screen.innerHTML, 10);
-                switch (op) {
-                    case `+`:
-                        ans = add(v1, v2);
-                        break;
-
-                    case `-`:
-                        ans = sub(v1, v2);
-                        break;
-
-                    case `*`:
-                        ans = mul(v1, v2);
-                        break;
-
-                    case `/`:
-                        ans = div(v1, v2);
-                        break;
-
-                    default:
-                        break;
-                }
-                if (operation !== `=`) {
-                    op = operation;
-                } else if (operation === `=`) {
-                    v2 = undefined;
-                    op = "";
-                    console.log("hi");
-                }
-                screen.innerHTML = `${ans}`;
-                v1 = ans;
-                clear = true;
-            } else if (v1 !== undefined && op === "") {
-                op = operation;
-                screen.innerHTML = "";
-            }
-        }
-
-        ansKey.addEventListener("click", () => {
-
-        })
-
-        function clearEveryThing() {
-            screen.innerHTML = "";
-            v1 = undefined;
-            v2 = undefined;
-            op = "";
-            ans = undefined;
-        }
-
-        clr.addEventListener("click", () => {
-            clearEveryThing();
-        })
-
-    </script>
+    <script type="text/javascript" src="script.js"></script>
 </body>
 
 </html>

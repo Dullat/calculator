@@ -1,116 +1,98 @@
-const numKey = document.querySelectorAll('.num-key');
 const screen = document.querySelector('.screen');
-const clr = document.querySelector('.clear-key');
+const opKey = document.querySelectorAll('.op-key');
+const numKey = document.querySelectorAll('.num-key');
+const clearKey = document.querySelector('.clear-key');
 const ansKey = document.querySelector('.ans-key');
-const numKeyArray = Array.from(numKey);
-console.log(numKeyArray);
+const dotKey = document.querySelector('.dot-key');
 
-let clear = false;
+let clearScreenNow = false;
+let firstValue = '';
+let lastValue = '';
+let lastOp = '';
 
-numKeyArray.forEach(element => {
-    element.addEventListener("click", () => {
-        if (clear === true) {
-            screen.innerHTML = "";
-            clear = false;
-        }
-        screen.innerHTML += element.innerHTML;
-        console.log(v1, v2, op, ans);
-    })
+numKey.forEach(element => {
+    element.addEventListener('click', () => appendNumber(element));
 });
 
-function add(a, b) {
-    let temp = a + b;
-    return temp;
-    a = 0;
-    b = 0;
-}
-
-function sub(a, b) {
-    let temp = a - b;
-    return temp;
-}
-
-function mul(a, b) {
-    let temp = a * b;
-    return temp;
-}
-
-function div(a, b) {
-    let temp;
-    if (v2 !== 0) {
-        temp = a / b;
-    } else {
-        alert("are u serious?");
-    }
-    return temp;
-}
-
-let v1 = undefined;
-let v2 = undefined;
-let op = "";
-let ans = undefined;
-function exec(operation) {
-    const inputValue = parseInt(screen.innerHTML, 10);
-    if (isNaN(inputValue)) {
-        clearEverything();
-        return;
-    }
-
-    if (v1 === undefined) {
-        v1 = parseInt(screen.innerHTML, 10);
-        op = operation;
-        console.log(v1);
-        screen.innerHTML = "";
-    } else if (v1 !== undefined && op !== "") {
-        v2 = parseInt(screen.innerHTML, 10);
-        switch (op) {
-            case `+`:
-                ans = add(v1, v2);
-                break;
-
-            case `-`:
-                ans = sub(v1, v2);
-                break;
-
-            case `*`:
-                ans = mul(v1, v2);
-                break;
-
-            case `/`:
-                ans = div(v1, v2);
-                break;
-
-            default:
-                break;
-        }
-        if (operation !== `=`) {
-            op = operation;
-        } else if (operation === `=`) {
-            v2 = undefined;
-            op = "";
-            console.log("hi");
-        }
-        screen.innerHTML = `${ans}`;
-        v1 = ans;
-        clear = true;
-    } else if (v1 !== undefined && op === "") {
-        op = operation;
-        screen.innerHTML = "";
-    }
-}
-
-ansKey.addEventListener("click", () => {
-
+opKey.forEach(element => {
+    element.addEventListener('click', () => setOperation(element));
 })
+
+clearKey.addEventListener('click', () => clearEveryThing());
+
+ansKey.addEventListener('click', () => evaluate());
+
+dotKey.addEventListener('click', () => addDot());
+
+function appendNumber(value) {
+    if (clearScreenNow === true) {
+        clearScreen();
+    }
+    screen.textContent += value.textContent;
+    clearScreenNow = false;
+}
+
+function clearScreen() {
+    screen.textContent = '';
+}
 
 function clearEveryThing() {
-    screen.innerHTML = "";
-    v1 = undefined;
-    v2 = undefined;
-    op = "";
-    ans = undefined;
+    clearScreenNow = false;
+    firstValue = '';
+    lastValue = '';
+    lastOp = '';
+    screen.textContent = '';
 }
 
-clr.addEventListener("click", () => {
-    clearEveryThing();
-})
+function addDot() {
+    if (screen.textContent.includes('.')) {
+        return
+    }
+
+    screen.textContent += '.';
+}
+
+function setOperation(value) {
+    clearScreenNow = true;
+    if (lastOp === '') {
+        firstValue = screen.textContent;
+        lastOp = value.textContent;
+        return;
+    }
+    evaluate();
+    lastOp = value.textContent;
+}
+
+function evaluate() {
+    if (firstValue !== '') {
+        lastValue = screen.textContent;
+        screen.textContent = process(lastOp, firstValue, lastValue);
+        lastOp = '';
+    }
+
+    firstValue = screen.textContent;
+    lastValue = '';
+    console.log(firstValue, "\n", lastValue, "clrd");
+}
+
+function process(op, a, b) {
+    console.log(op, a, b);
+    a = Number(a);
+    b = Number(b);
+    switch (op) {
+        case '+':
+            return a + b;
+        case '-':
+            return a - b;
+        case '*':
+            return a * b;
+        case '/':
+            if (a === 0 && b === 0) {
+                alert(" 0 / 0 = ERROR")
+                return '';
+            }
+            return a / b;
+        default:
+            break;
+    }
+}
