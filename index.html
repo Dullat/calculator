@@ -12,8 +12,12 @@
 </head>
 
 <body>
+    <div class="toggle-btn"></div>
     <div class="wrapper">
-        <div class="screen"></div>
+        <span class="screen-op"></span>
+        <div class="screen">
+            <span class="screen-value"></span>
+        </div>
         <div class="keypad" style="user-select: none;">
             <div class="key op-key plus">+</div>
             <div class="key op-key">-</div>
@@ -36,7 +40,22 @@
         </div>
     </div>
 
+    <div class="feetNotFoot">
+        <span>copyright</span>
+        <span>&copy;</span>
+        <span class="date"></span>
+        <script>
+            const date = document.querySelector('.date');
+            date.textContent = new Date().getFullYear();
+        </script>
+        <span>dullat</span>
+        <a href="https:/github.com/dullat/calculator/" target="_blank">
+            <img src="github-logo/logo.png" alt="githubLogo" style="height: 20px;margin-bottom: -3px;">
+        </a>
+    </div>
+
     <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="mode.js"></script>
 </body>
 
 </html>
